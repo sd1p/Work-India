@@ -1,5 +1,8 @@
 import { bookTrainService } from "../services/bookingServices";
 import { IBookingData } from "../interface/bookingInterface";
+import DBconfig from "../config/dbConfig";
+
+const prisma = DBconfig.getInstance();
 
 type QueueItem = {
   data: IBookingData;
@@ -24,10 +27,24 @@ class BookingQueue {
 
     while (this.queue.length > 0) {
       const { data, resolve, reject } = this.queue.shift()!;
+
       try {
         const result = await bookTrainService(data);
+
+        await prisma.booking.update({
+          where: { id: data.bookingId },
+          data: { status: "CONFIRMED" },
+        });
+
         resolve(result);
       } catch (error) {
+        console.error(`Error processing booking ${data.bookingId}:`, error);
+
+        await prisma.booking.update({
+          where: { id: data.bookingId },
+          data: { status: "FAILED" },
+        });
+
         reject(error);
       }
     }

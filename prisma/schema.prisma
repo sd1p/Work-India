@@ -40,8 +40,8 @@ model Booking {
   id         Int           @id @default(autoincrement())
   trainId    Int
   userId     Int
-  seatNumber Int
-  status     BookingStatus @default(CONFIRMED)
+  seatNumber Int?
+  status     BookingStatus @default(AVAILABLE)
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
 
@@ -50,7 +50,9 @@ model Booking {
 }
 
 enum BookingStatus {
+  AVAILABLE
   CONFIRMED
   PENDING
   CANCELLED
+  FAILED
 }

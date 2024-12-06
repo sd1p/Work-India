@@ -42,7 +42,10 @@ export const bookTrainService = async (data: IBookingData) => {
         throw new Error("No available seats.");
       }
 
-      const newBooking = await tx.booking.create({
+      const newBooking = await tx.booking.update({
+        where: {
+          id: data.bookingId,
+        },
         data: {
           trainId: data.trainId,
           seatNumber,

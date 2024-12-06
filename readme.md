@@ -50,4 +50,4 @@ node test.js
 ## How concurrecy is handled?
 
 1. I have used row level locking for each booking transaction.
-2. I have used a queue to handle the booking requests, queue is processed one by one.
+2. I have used a queue to handle the booking requests, queue processes one request at a time.
