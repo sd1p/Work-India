@@ -34,12 +34,18 @@ Edit the `.env` file and update it with your configuration.
 npm start
 ```
 
+#### 5. Run the Tests
+
+```bash
+node test.js
+```
+
 ---
 
 ## Technologies Used
 
-Backend: Node.js, Express.js, Prisma ORM
-Database: PostGres (Supabase Free Tier)
+- Backend: Node.js, Express.js, Prisma ORM
+- Database: PostGres (Supabase Free Tier)
 
 ## How concurrecy is handled?
 
