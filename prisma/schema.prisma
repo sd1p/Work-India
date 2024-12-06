@@ -41,7 +41,7 @@ model Booking {
   trainId    Int
   userId     Int
   seatNumber Int?
-  status     BookingStatus @default(AVAILABLE)
+  status     BookingStatus
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
 
