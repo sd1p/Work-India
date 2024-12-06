@@ -28,13 +28,14 @@ const sendBookingRequest = async (id) => {
   }
 };
 
-const sendConcurrentRequests = async () => {
+const sendConcurrentRequests = async (reqs) => {
   const requests = [];
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= reqs; i++) {
     requests.push(sendBookingRequest(i));
   }
   await Promise.all(requests);
   console.log("all requests completed");
 };
 
-sendConcurrentRequests();
+const reqs = 10;
+sendConcurrentRequests(XMLHttpRequest);
