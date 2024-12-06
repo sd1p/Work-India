@@ -13,41 +13,44 @@ enum Role {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  username  String     @unique
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
   password  String
-  email     String     @unique
+  email     String    @unique
   role      Role
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  bookings  Bookings[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
 }
 
 model Train {
-  id              Int        @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   name            String
   departure_time  DateTime
   source          String
   destination     String
   total_seats     Int
   available_seats Int
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
-  bookings        Bookings[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  bookings        Booking[]
 }
 
-model Bookings {
-  id        Int           @id @default(autoincrement())
-  status    BookingStatus
-  userId    Int
-  trainId   Int
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  User      User          @relation(fields: [userId], references: [id])
-  Train     Train         @relation(fields: [trainId], references: [id])
+model Booking {
+  id         Int           @id @default(autoincrement())
+  trainId    Int
+  userId     Int
+  seatNumber Int
+  status     BookingStatus @default(CONFIRMED)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  Train Train @relation(fields: [trainId], references: [id])
+  User  User  @relation(fields: [userId], references: [id])
 }
 
 enum BookingStatus {
-  Confirmed
-  Canceled
+  CONFIRMED
+  PENDING
+  CANCELLED
 }

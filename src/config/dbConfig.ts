@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-// Singleton for DB connection
-
+// singleton for DB connection
 class DBconfig {
   private static prismaClient: PrismaClient | null = null;
 
