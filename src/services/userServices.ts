@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { ILoginUser, IRegisterUser } from "../interface/userInterface";
 import DBconfig from "../config/dbConfig";
 import { jwtSign } from "../utils/jwtUtils";
+import ErrorHandler from "../utils/ErrorHandler";
 
 const prisma = DBconfig.getInstance();
 
@@ -24,7 +25,7 @@ export const registerUserService = async (data: IRegisterUser) => {
     const { password: _, ...userWithoutPassword } = user;
     return { token, ...userWithoutPassword };
   } catch (error) {
-    throw new Error("An unexpected error occurred");
+    throw new ErrorHandler("An unexpected error occurred", 500);
   }
 };
 
@@ -34,18 +35,18 @@ export const loginUserService = async (data: ILoginUser) => {
   try {
     const user = await prisma.user.findUnique({ where: { username } });
     if (!user) {
-      throw new Error("User not found");
+      throw new ErrorHandler("User not found", 404);
     }
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
-      throw new Error("Invalid password");
+      throw new ErrorHandler("Invalid password", 400);
     }
 
     const token = jwtSign({ userId: user.id, role: user.role });
     const { password: _, ...userWithoutPassword } = user;
     return { token, ...userWithoutPassword };
   } catch (error) {
-    throw new Error("An unexpected error occurred");
+    throw new ErrorHandler("An unexpected error occurred", 500);
   }
 };

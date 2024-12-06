@@ -68,7 +68,7 @@ export const bookTrainService = async (data: IBookingData) => {
     return booking;
   } catch (error) {
     console.error("Booking failed:", error);
-    throw new ErrorHandler(`An unexpected error occurred`, 500);
+    throw new ErrorHandler(`${error}`, 500);
   }
 };
 

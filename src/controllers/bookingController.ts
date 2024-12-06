@@ -6,6 +6,7 @@ import {
   bookTrainService,
   getBookingDetailsService,
 } from "../services/bookingServices";
+import { bookingQueue } from "../services/bookingQueue";
 
 export const bookTrainController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -16,11 +17,12 @@ export const bookTrainController = asyncHandler(
       }
       const userId = req.user.id;
 
-      const booking = await bookTrainService({ userId, trainId });
+      const booking = await bookingQueue.addToQueue({ userId, trainId });
 
       res.status(201).json(booking);
     } catch (err) {
-      throw new ErrorHandler(`An unexpected error occurred while booking`, 500);
+      console.error("Error booking train:", err);
+      throw new ErrorHandler(`${err}`, 500);
     }
   }
 );
